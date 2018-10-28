@@ -28,10 +28,22 @@ public class Interval {
 
     public Interval intersect(Interval i) {
         Interval novi = new Interval();
-        if(this.pocetnaTacka < i.pocetnaTacka) novi.pocetnaTacka = i.pocetnaTacka;
-            else novi.pocetnaTacka = this.pocetnaTacka;
-        if(this.krajnjaTacka < i.krajnjaTacka) novi.krajnjaTacka = novi.krajnjaTacka;
-            else novi.krajnjaTacka = i.krajnjaTacka;
+        if(this.pocetnaTacka < i.pocetnaTacka) {
+            novi.pocetnaTacka = i.pocetnaTacka;
+            novi.pocetnaPripada = i.pocetnaPripada;
+        }
+            else {
+                novi.pocetnaTacka = this.pocetnaTacka;
+                novi.pocetnaPripada = this.pocetnaPripada;
+            }
+        if(this.krajnjaTacka < i.krajnjaTacka) {
+            novi.krajnjaTacka = i.krajnjaTacka;
+            novi.krajnjaPripada = i.krajnjaPripada;
+        }
+            else {
+                novi.krajnjaTacka = this.krajnjaTacka;
+                novi.krajnjaPripada = this.krajnjaPripada;
+        }
         if ((this.pocetnaTacka > i.krajnjaTacka) || (i.pocetnaTacka > this.krajnjaTacka)) {
             Interval prazan = new Interval();
             return  prazan;
@@ -43,10 +55,22 @@ public class Interval {
     
     public static Interval intersect(Interval i, Interval i2) {
         Interval novi = new Interval();
-        if(i.pocetnaTacka < i2.pocetnaTacka) novi.pocetnaTacka = i2.pocetnaTacka;
-        else novi.pocetnaTacka = i.pocetnaTacka;
-        if(i.krajnjaTacka < i2.krajnjaTacka) novi.krajnjaTacka = i.krajnjaTacka;
-        else novi.krajnjaTacka = i2.krajnjaTacka;
+        if(i.pocetnaTacka < i2.pocetnaTacka) {
+            novi.pocetnaTacka = i2.pocetnaTacka;
+            novi.pocetnaPripada = i2.pocetnaPripada;
+                }
+        else {
+            novi.pocetnaTacka = i.pocetnaTacka;
+            novi.pocetnaPripada = i.pocetnaPripada;
+        }
+        if(i.krajnjaTacka < i2.krajnjaTacka) {
+            novi.krajnjaTacka = i.krajnjaTacka;
+            novi.krajnjaPripada = i.krajnjaPripada;
+        }
+        else {
+            novi.krajnjaTacka = i2.krajnjaTacka;
+            novi.krajnjaPripada = i2.krajnjaPripada;
+        }
         if ((i.pocetnaTacka > i2.krajnjaTacka) || (i2.pocetnaTacka > i.krajnjaTacka)) {
             Interval prazan = new Interval();
             return  prazan;
@@ -56,10 +80,32 @@ public class Interval {
     }
 
     public boolean isIn(double v) {
-        if (v>pocetnaTacka && v<krajnjaTacka) return true;
+        if (v>pocetnaTacka || (v == pocetnaTacka && pocetnaPripada == true) && (v<krajnjaTacka || (v == krajnjaTacka && krajnjaPripada == true))) return true;
         return false;
     }
-    
-    
-    
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        Interval i =  (Interval) obj;
+        if (i.pocetnaTacka == pocetnaTacka && i.krajnjaTacka == krajnjaTacka && pocetnaPripada == i.pocetnaPripada && krajnjaPripada == i.krajnjaPripada)   return  true;
+        return false;
+    }
+
+    @Override
+    public String toString() {
+        if(this.pocetnaTacka==0 && this.krajnjaTacka==0 && this.pocetnaPripada==false && this.krajnjaPripada==false) return "()";
+
+        String s = "";
+
+        if(pocetnaPripada == true) s +="[";
+        else if (pocetnaPripada == false) s += "(";
+
+        s += this.pocetnaTacka + "," + this.krajnjaTacka;
+
+        if(krajnjaPripada == true) s +="]";
+        else if (krajnjaPripada == false) s += ")";
+
+        return  s;
+    }
 }
